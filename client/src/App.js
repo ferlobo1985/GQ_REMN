@@ -1,24 +1,47 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
 
 function App() {
+
+  const addUserHandler = () => {
+      const userData = {
+        email:'user1@gmail.com',
+        password:'testing123'
+      }
+
+      axios({
+        url:'http://localhost:5000/graphql',
+        method:'POST',
+        data:{
+          query:`
+            mutation {
+              addUser(userInput:{
+                email:"${userData.email}"
+                password:"${userData.password}"
+              }){
+                _id
+                email
+                password
+              }
+            }
+          `
+        }
+      }).then( response =>{
+        console.log(response.data)
+      }).catch( err => {
+        console.log(err)
+      })
+
+
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button
+        onClick={addUserHandler}
+      >
+        ADD USER
+      </button>
     </div>
   );
 }
