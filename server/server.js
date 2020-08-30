@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 
 const User = require('./models/user');
 
-
 const typeDefs = gql`
             type Query {
                 user(id:ID!): User!
@@ -56,7 +55,6 @@ const resolvers = {
 }
 
 const server = new ApolloServer({ typeDefs, resolvers });
-
 
 const PORT = process.env.PORT || 5000;
 mongoose.connect(`mongodb+srv://graphqluser:testing123@cluster0.5eeik.mongodb.net/<dbname>?retryWrites=true&w=majority`,{
