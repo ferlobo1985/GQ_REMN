@@ -1,8 +1,9 @@
-const { ApolloServer, gql } = require('apollo-server');
+const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 
+const { ApolloServer, gql } = require('apollo-server-express');
 const User = require('./models/user');
-
 
 const typeDefs = gql`
             type Query {
@@ -55,17 +56,22 @@ const resolvers = {
     }
 }
 
-const server = new ApolloServer({ typeDefs, resolvers });
 
+const server = new ApolloServer({ typeDefs, resolvers });
+const app = express();
+
+server.applyMiddleware({ app });
 
 const PORT = process.env.PORT || 5000;
 mongoose.connect(`mongodb+srv://graphqluser:testing123@cluster0.5eeik.mongodb.net/<dbname>?retryWrites=true&w=majority`,{
     useNewUrlParser:true,
     useUnifiedTopology:true
 }).then(()=>{
-    server.listen(PORT,()=>{
+    app.listen(PORT,()=>{
         console.log(`Running running on port ${PORT}`)
     });
 }).catch( err => {
     console.log(err)
 });
+
+
